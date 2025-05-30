@@ -8,10 +8,11 @@ namespace Students
 {
     public  class Class
     {
-        public string name { get; }
+        public string Name { get; }
         public Class(string name)
         {
-            this.name=name;
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("Name cannot be null");
+            this.Name=name;
         }
     }
 }
