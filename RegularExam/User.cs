@@ -11,19 +11,20 @@ namespace RegularExam
         public string Username { get; private set; }
         public User(string username)
         {
+            if(string.IsNullOrWhiteSpace(username))throw new ArgumentNullException("username cannot be null");
             this.Username = username;
         }
-        public void Commit(Repository repo, string messege)
+        public void Commit(Repository repo, string messege, string branch)
         {
-            Branch mainBranch = repo.Branches.FirstOrDefault(B => B.Name=="main");
-            if (mainBranch != null)
+            Branch currentBranch = repo.Branches.FirstOrDefault(B => B.Name==branch);
+            if (currentBranch != null)
             {
                 Commit commit = new Commit(messege, this, DateTime.Now);
-                mainBranch.Commits.Add(commit);
+                currentBranch.Commits.Add(commit);
             }
             else
             {
-                throw new ArgumentException("Main branch is not found in the repository");
+                throw new ArgumentException($"Branch {branch} is not found in the repository");
             }
         }
 
